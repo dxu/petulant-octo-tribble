@@ -3,40 +3,31 @@ PDFJS.getDocument('book.pdf').then(function(pdf) {
   var num_pages = pdf.numPages > 8 ? 8 : pdf.numPages;
   var scale = 1.5;
 
-  var canvas = document.getElementById('the-canvas');
-  var context = canvas.getContext('2d');
-  var canvasHeight = 0;
-  var canvasWidth = 0;
-
-  var pageStarts = [];
-
+  // contains all canvas elements
+  var pages = [];
 
   for(var i=0; i < num_pages; i++) {
     // Using promise to fetch the page
-    pdf.getPage(1).then(function(page) {
+    pdf.getPage(i+1).then(function(page) {
       var viewport = page.getViewport(scale);
-      //
       // Prepare canvas using PDF page dimensions
-      //
-      canvasHeight += viewport.height;
-      canvasWidth += viewport.width;
+      var canvas = document.createElement('canvas');
+      canvas.id = 'page' + page.pageNumber;
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+      var context = canvas.getContext('2d');
 
-
-      //
-      // Render PDF page into canvas context
-      //
       var renderContext = {
         canvasContext: context,
         viewport: viewport
       };
       page.render(renderContext);
+      pages.push(canvas);
+      // append it to the body
+      document.body.appendChild(canvas);
     });
-
   }
 
-
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
 });
 
 //43049 everglade park drive.
