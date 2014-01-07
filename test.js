@@ -4,39 +4,57 @@ PDFJS.getDocument('book.pdf').then(function(pdf) {
   var scale = 1.5;
 
   var canvas = document.getElementById('the-canvas');
-  var context = canvas.getContext('2d');
   var canvasHeight = 0;
   var canvasWidth = 0;
 
-  var pageStarts = [];
+  var pageStarts = [0];
+  var pageDatas = [];
 
 
-  for(var i=0; i < num_pages; i++) {
+  // pages are 1-indexed
+  for(var i=1; i <= num_pages; i++) {
     // Using promise to fetch the page
-    pdf.getPage(1).then(function(page) {
+    pdf.getPage(i).then(function(page) {
       var viewport = page.getViewport(scale);
-      //
-      // Prepare canvas using PDF page dimensions
-      //
+      var context = canvas.getContext('2d');
+      // update final canvas
       canvasHeight += viewport.height;
-      canvasWidth += viewport.width;
+      // width should be the max width so far
+      canvasWidth = canvasWidth > viewport.width ? canvasWidth : viewport.width;
 
+      // Prepare canvas using PDF page dimensions
+      canvas.height = canvasHeight;
+      canvas.width = canvasWidth;
 
-      //
       // Render PDF page into canvas context
-      //
-      var renderContext = {
-        canvasContext: context,
-        viewport: viewport
-      };
+      var renderContext = {canvasContext: context,viewport: viewport};
       page.render(renderContext);
-    });
 
+      console.log('hello' + page.pageNumber);
+      console.log('pagestarts', page.pageNumber, pageStarts[page.pageNumber - 1], viewport.height, page.pageNumber - 1);
+      pageStarts.push(pageStarts[page.pageNumber - 1] + viewport.height);
+      pageDatas.push(context.getImageData(0, 0, canvas.width, canvas.height));
+
+      console.log('helloboy', num_pages);
+      // check if last page, then do final cleanup
+      if(page.pageNumber === num_pages) {
+        console.log('finished');
+        console.log(pageStarts);
+
+        // clear the canvas
+        canvas.height = canvasHeight;
+        canvas.width = canvasWidth;
+        // regrab the context at the end
+        var context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        console.log(pageDatas);
+        for (var i = 0; i < pageDatas.length; i++) {
+          // context.putImageData(pageDatas[i], 0, pageStarts[i]);
+        }
+      }
+    });
   }
 
-
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
 });
 
 //43049 everglade park drive.
