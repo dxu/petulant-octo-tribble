@@ -1,4 +1,4 @@
-PDFJS.getDocument('book.pdf').then(function(pdf) {
+PDFJS.getDocument('2.pdf').then(function(pdf) {
   // only show the first 8 pages
   var num_pages = pdf.numPages > 8 ? 8 : pdf.numPages;
   var scale = 1.5;

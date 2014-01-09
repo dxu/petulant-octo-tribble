@@ -1,14 +1,40 @@
-<!doctype html>
+<!-- <!doctype html>-->
+<!-- <html>-->
+
+<!--   <head>-->
+<!--     [> In production, only one script (pdf.js) is necessary <]-->
+<!--     [> In production, change the content of PDFJS.workerSrc below <]-->
+<!--     <script type="text/javascript" src="pdf.js"></script>-->
+<!--     <script type="text/javascript" src="text-selection.js"></script>-->
+<!--     <button id="zoomin"> Zoom In </button>-->
+<!--     <button id="zoomout"> Zoom Out </button>-->
+<!--   </head>-->
+
+<!--   <body>-->
+<!--   </body>-->
+
+<!-- </html>-->
+
+
 <html>
+    <head>
+        <title>Minimal pdf.js text-selection demo</title>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 
-  <head>
-    <!-- In production, only one script (pdf.js) is necessary -->
-    <!-- In production, change the content of PDFJS.workerSrc below -->
-    <script type="text/javascript" src="pdf.js"></script>
-    <script type="text/javascript" src="test.js"></script>
-  </head>
+        <script type="text/javascript" src="pdf.js"></script>
 
-  <body>
-  </body>
+        <!-- These files are viewer components that you will need to get text-selection to work -->
+        <script src="pdf_find_bar.js"></script>
+        <script src="pdf_find_controller.js"></script>
+        <script src="ui_utils.js"></script>
+        <script src="text_layer_builder.js"></script>
 
+        <script src="text-selection.js" type="text/javascript"></script>
+    </head>
+    <body>
+        This is a minimal pdf.js text-selection demo. The existing minimal-example shows you how to render a PDF, but not
+        how to enable text-selection. This example shows you how to do both. <br /><br />
+        <div id="pdfContainer" class="pdf-content">
+        </div>
+    </body>
 </html>
