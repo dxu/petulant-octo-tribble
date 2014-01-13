@@ -30,8 +30,6 @@ window.onload = function () {
         var canvasOffset = $canvas.offset();
         var $textLayerDiv = jQuery("<div />")
             .addClass("textLayer")
-            .css("height", viewport.height + "px")
-            .css("width", viewport.width + "px")
             .offset({
                 top: canvasOffset.top,
                 left: canvasOffset.left
@@ -54,8 +52,14 @@ window.onload = function () {
         context._scaleX = outputScale.sx;
         context._scaleY = outputScale.sy;
         if (outputScale.scaled) {
+          console.log(outputScale, 'hi');
+          canvas.width *= outputScale.sx;
+          canvas.height *= outputScale.sy;
             context.scale(outputScale.sx, outputScale.sy);
         }
+        // set textlayerdiv width/height
+        $textLayerDiv.css("height", canvas.height + "px")
+          .css("width", canvas.width + "px")
 
         $pdfContainer.append($textLayerDiv);
 
